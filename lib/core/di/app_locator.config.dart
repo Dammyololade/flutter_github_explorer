@@ -24,8 +24,6 @@ import 'package:flutter_github_explorer/features/search/domain/usecases/load_mor
     as _i10;
 import 'package:flutter_github_explorer/features/search/domain/usecases/search_usecase.dart'
     as _i9;
-import 'package:flutter_github_explorer/features/search/presentation/cubit/search_cubit.dart'
-    as _i11;
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
 
@@ -51,8 +49,6 @@ extension GetItInjectableX on _i1.GetIt {
         () => _i9.SearchUsecase(gh<_i7.SearchRepository>()));
     gh.factory<_i10.LoadMoreUsecase>(
         () => _i10.LoadMoreUsecase(gh<_i7.SearchRepository>()));
-    gh.factory<_i11.SearchCubit>(
-        () => _i11.SearchCubit(searchUsecase: gh<_i9.SearchUsecase>()));
     return this;
   }
 }

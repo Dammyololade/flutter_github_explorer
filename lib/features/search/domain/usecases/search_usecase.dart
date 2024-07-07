@@ -5,6 +5,10 @@ import 'package:flutter_github_explorer/features/search/data/models/search_respo
 import 'package:flutter_github_explorer/features/search/domain/repositories/search_repository.dart';
 import 'package:injectable/injectable.dart';
 
+/// A concrete implementation of [SearchUsecase] contract that uses [SearchRepository] to fetch data.
+/// One major advantage of using this approach is that the repository can be easily swapped out with another implementation
+/// without affecting the usecase.
+/// This is because the usecase is the only class that knows about the repository.
 @injectable
 class SearchUsecase implements BaseUsecase<SearchResponse> {
 

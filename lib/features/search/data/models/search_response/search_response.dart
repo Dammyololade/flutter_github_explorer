@@ -11,11 +11,20 @@ class SearchResponse {
     required this.paginationInfo,
   });
 
-  factory SearchResponse.parse(Map<String, dynamic> body, String linkHeader) {
+  factory SearchResponse.parse(Map<String, dynamic> body, String? linkHeader) {
     return SearchResponse(
       model: ItemsModel.fromJson(body),
-      paginationInfo:
-          PaginationInfo.fromJson(LinkParser.parseLinkHeader(linkHeader)),
+      paginationInfo: linkHeader == null
+          ? PaginationInfo()
+          : PaginationInfo.fromJson(LinkParser.parseLinkHeader(linkHeader)),
+    );
+  }
+
+  SearchResponse copyWithLoadMoreResponse(
+      ItemsModel newModel, PaginationInfo paginationInfo) {
+    return SearchResponse(
+      model: model.addItems(newModel.items),
+      paginationInfo: paginationInfo,
     );
   }
 }

@@ -1,4 +1,3 @@
-
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -8,7 +7,6 @@ part 'items_model.g.dart';
 
 @JsonSerializable()
 class ItemsModel extends Equatable {
-
   @JsonKey(name: 'total_count')
   final int totalCount;
   final List<Item> items;
@@ -18,12 +16,19 @@ class ItemsModel extends Equatable {
     required this.items,
   });
 
-  factory ItemsModel.fromJson(Map<String, dynamic> json) => _$ItemsModelFromJson(json);
-
+  factory ItemsModel.fromJson(Map<String, dynamic> json) =>
+      _$ItemsModelFromJson(json);
 
   @override
   List<Object?> get props => [totalCount, items];
 
   @override
   String toString() => 'ItemsModel(totalCount: $totalCount, items: $items)';
+
+  ItemsModel addItems(List<Item> newItems) {
+    return ItemsModel(
+      totalCount: totalCount,
+      items: [...items, ...newItems],
+    );
+  }
 }

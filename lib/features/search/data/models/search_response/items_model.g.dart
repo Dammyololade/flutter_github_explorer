@@ -10,7 +10,7 @@ ItemsModel _$ItemsModelFromJson(Map<String, dynamic> json) => ItemsModel(
       totalCount: (json['total_count'] as num).toInt(),
       items: (json['items'] as List<dynamic>)
           .map((e) => Item.fromJson(e as Map<String, dynamic>))
-          .toList(),
+          .toList()
     );
 
 Map<String, dynamic> _$ItemsModelToJson(ItemsModel instance) =>
