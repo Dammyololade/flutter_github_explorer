@@ -1,6 +1,6 @@
 import 'package:flutter_github_explorer/core/utils/link_parser.dart';
 import 'package:flutter_github_explorer/features/search/data/models/search_response/items_model.dart';
-import 'package:flutter_github_explorer/features/search/data/models/search_response/pagination_info.dart';
+import 'package:flutter_github_explorer/core/common_domain/models/pagination_info.dart';
 
 class SearchResponse {
   final ItemsModel model;

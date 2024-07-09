@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_github_explorer/core/utils/route_manager.dart';
 import 'package:flutter_github_explorer/features/search/data/models/search_response/item.dart';
 import 'package:flutter_github_explorer/features/search/presentation/cubit/search_cubit.dart';
 import 'package:flutter_github_explorer/features/search/presentation/cubit/search_state.dart';
 import 'package:refresh_loadmore/refresh_loadmore.dart';
 
+/// A widget to display the search results.
+/// It displays a loading indicator when the search is in progress.
+/// It displays the search results when the search is successful.
+/// It displays an error message when an error occurs during the search.
 class SearchResult extends StatelessWidget {
   const SearchResult({super.key});
 
@@ -80,68 +85,79 @@ class SingleItemBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-        decoration: BoxDecoration(
-          color: Theme.of(context).dividerColor,
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Row(
-          children: [
-            CircleAvatar(
-              radius: 24,
-              backgroundImage: NetworkImage(item.owner.avatarUrl),
-            ),
-            const SizedBox(
-              width: 8,
-            ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    item.fullName,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 4),
-                    child: Text(
-                      item.description,
-                      maxLines: 2,
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).pushNamed(
+          RouteManager.details,
+          arguments: item,
+        );
+      },
+      child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+          decoration: BoxDecoration(
+            color: Theme.of(context).dividerColor,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Row(
+            children: [
+              Hero(
+                tag: item.fullName,
+                child: CircleAvatar(
+                  radius: 24,
+                  backgroundImage: NetworkImage(item.owner.avatarUrl),
+                ),
+              ),
+              const SizedBox(
+                width: 8,
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      item.fullName,
+                      maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
-                        fontSize: 14,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        'Stars: ${item.starGazersCount}',
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 4),
+                      child: Text(
+                        item.description,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
-                          fontSize: 12,
+                          fontSize: 14,
                         ),
                       ),
-                      const SizedBox(
-                        width: 14,
-                      ),
-                      Text(
-                        'Forks: ${item.forks}',
-                        style: const TextStyle(
-                          fontSize: 12,
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          'Stars: ${item.starGazersCount}',
+                          style: const TextStyle(
+                            fontSize: 12,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                        const SizedBox(
+                          width: 14,
+                        ),
+                        Text(
+                          'Forks: ${item.forks}',
+                          style: const TextStyle(
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
-        ));
+            ],
+          )),
+    );
   }
 }

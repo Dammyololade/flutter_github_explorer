@@ -1,4 +1,3 @@
-
 /// A utility class to parse the link header from the response.
 /// The link header is a string that contains the links to the next and previous pages.
 /// The link header is in the format of <url>; rel="next", <url>; rel="prev" and so on.
@@ -6,7 +5,11 @@
 /// The key is the rel value and the value is the url.
 /// For example, if the link header is '<https://api.github.com/user/repos?page=3&per_page=100>; rel="next", <https://api.github.com/user/repos?page=1&per_page=100>; rel="prev"',
 class LinkParser {
+
+  /// Parses the link header and returns a map of the links.
+  /// returns an empty map if the input is empty else returns a map of the links.
   static Map<String, String> parseLinkHeader(String input) {
+    if (input.isEmpty) return <String, String>{};
     final out = <String, String>{};
     final parts = input.split(', ');
     for (final part in parts) {

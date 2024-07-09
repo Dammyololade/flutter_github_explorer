@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_github_explorer/core/di/app_locator.dart';
 import 'package:flutter_github_explorer/core/utils/route_manager.dart';
 
+/// The entry point of the app.
+/// It initializes the app locator and runs the app.
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   initAppLocator();
   runApp(const MyApp());
 }

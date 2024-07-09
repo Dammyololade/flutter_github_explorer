@@ -1,6 +1,14 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_github_explorer/features/search/data/models/search_response/search_response.dart';
 
+/// A class to represent the state of the search feature.
+/// It can be in one of the following states:
+/// - [SearchInitial]: The initial state when the search query is empty.
+/// - [SearchCleared]: The state when the search query is cleared.
+/// - [SearchLoading]: The state when the search is in progress.
+/// - [SearchLoaded]: The state when the search is successful.
+/// - [SearchError]: The state when an error occurs during the search.
+/// The [SearchLoaded] state contains the search results and the search query.
 abstract class SearchState extends Equatable {}
 
 class SearchInitial extends SearchState {

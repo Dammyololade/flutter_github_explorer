@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_github_explorer/core/utils/route_manager.dart';
 
+/// The home page of the app. It displays a welcome message and a button to search for a repository.
+/// When the button is clicked, it navigates to the search page.
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 

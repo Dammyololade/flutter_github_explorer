@@ -7,6 +7,10 @@ import 'package:flutter_github_explorer/features/search/presentation/cubit/searc
 import 'package:flutter_github_explorer/features/search/presentation/views/exp_search.dart';
 import 'package:flutter_github_explorer/features/search/presentation/views/search_result.dart';
 
+/// A page to search for repositories.
+/// It displays a search bar to search for repositories.
+/// It displays the search results in a list.
+/// It uses the [SearchCubit] to manage the search state.
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
 

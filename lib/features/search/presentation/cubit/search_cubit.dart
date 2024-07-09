@@ -5,11 +5,23 @@ import 'package:flutter_github_explorer/features/search/domain/usecases/load_mor
 import 'package:flutter_github_explorer/features/search/domain/usecases/search_usecase.dart';
 import 'package:flutter_github_explorer/features/search/presentation/cubit/search_state.dart';
 
+/// A [Cubit] that manages the search state.
+/// It uses the [SearchUsecase] to search for repositories based on a query.
+/// It uses the [LoadMoreUsecase] to load more repositories when the user scrolls to the bottom of the list.
+/// It debounces the search query to avoid making too many API calls.
+/// It emits different states based on the search results.
+/// The states are [SearchInitial], [SearchLoading], [SearchLoaded], [SearchError], and [SearchCleared].
+/// The [SearchInitial] state is emitted when the search query is empty.
+/// The [SearchLoading] state is emitted when the search is in progress.
+/// The [SearchLoaded] state is emitted when the search is successful.
+/// The [SearchError] state is emitted when an error occurs during the search.
+/// The [SearchCleared] state is emitted when the search query is cleared.
 class SearchCubit extends Cubit<SearchState> {
   SearchCubit({
     required this.searchUsecase,
     required this.loadMoreUsecase,
-  }) : super(SearchInitial());
+    SearchState? initialState,
+  }) : super(initialState ?? SearchInitial());
 
   final SearchUsecase searchUsecase;
   final LoadMoreUsecase loadMoreUsecase;
@@ -19,6 +31,9 @@ class SearchCubit extends Cubit<SearchState> {
     emit(SearchCleared());
   }
 
+  /// Search for repositories based on the given query.
+  /// It debounces the search query to avoid making too many API calls.
+  /// Does nothing if the query is empty or less than 4 characters.
   Future<void> search(String query) async {
     if (query.isEmpty) {
       _debounce?.cancel();
@@ -36,6 +51,9 @@ class SearchCubit extends Cubit<SearchState> {
     });
   }
 
+  /// Fetch the search results based on the given query.
+  /// It emits the [SearchLoaded] state if the search is successful.
+  /// It emits the [SearchError] state if an error occurs during the search.
   Future<void> _fetchData(String query) async {
     final result = await searchUsecase.call(url: query);
     if (state is SearchCleared) {
@@ -50,6 +68,7 @@ class SearchCubit extends Cubit<SearchState> {
     });
   }
 
+  /// Refresh the search results based on the current query.
   Future<void> refresh() async {
     final currentState = state;
     if (currentState is! SearchLoaded) {
@@ -58,6 +77,9 @@ class SearchCubit extends Cubit<SearchState> {
     return _fetchData(currentState.searchQuery);
   }
 
+  /// Load more repositories based on the current search results.
+  /// It emits the [SearchLoaded] state if the load more is successful.
+  /// It emits the [SearchError] state if an error occurs during the load more.
   Future<void> loadMore() async {
     final currentState = state;
     if (currentState is! SearchLoaded) {
