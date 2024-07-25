@@ -1,6 +1,6 @@
 
 import 'package:equatable/equatable.dart';
-import 'package:flutter_github_explorer/features/issues/data/models/issue_response.dart';
+import 'package:flutter_github_explorer/features/issues/domain/entities/issue_response_entity.dart';
 
 /// A class to represent the state of the issues screen.
 /// It can be one of the following states:
@@ -22,7 +22,7 @@ class IssueLoading extends IssueState {
 }
 
 class IssueLoaded extends IssueState {
-  final IssueResponse data;
+  final IssueResponseEntity data;
 
   IssueLoaded({required this.data});
 

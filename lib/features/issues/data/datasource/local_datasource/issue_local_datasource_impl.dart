@@ -1,6 +1,7 @@
 
 import 'package:flutter_github_explorer/core/database/local_database.dart';
 import 'package:flutter_github_explorer/features/issues/data/datasource/local_datasource/issue_local_datasource.dart';
+import 'package:flutter_github_explorer/features/issues/data/models/issue_response.dart';
 import 'package:injectable/injectable.dart';
 
 /// This class implements the [IssueLocalDatasource] interface.
@@ -14,13 +15,18 @@ class IssueLocalDatasourceImpl implements IssueLocalDatasource {
   final LocalDatabase localDatabase;
 
   @override
-  void cacheIssues(Map<String, dynamic> issues, String key) {
-    localDatabase.put(key: key, data: issues, store: DBStore.issues);
+  void cacheIssues(IssueResponse issues, String key) {
+    localDatabase.put(key: key, data: issues.toJson(), store: DBStore.issues);
   }
 
   @override
-  Future<Map<String, dynamic>?> getIssues(String key) {
-    return localDatabase.get(key: key, store: DBStore.issues);
+  Future<IssueResponse?> getIssues(String key)async {
+    try {
+      final data = await localDatabase.get(key: key, store: DBStore.issues);
+      return data != null ? IssueResponse.fromJson(data) : null;
+    } on Exception catch (_) {
+      return null;
+    }
   }
 
 }

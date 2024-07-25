@@ -24,7 +24,7 @@ Item _$ItemFromJson(Map<String, dynamic> json) => Item(
 Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
       'name': instance.name,
       'full_name': instance.fullName,
-      'owner': instance.owner,
+      'owner': instance.owner.toJson(),
       'description': instance.description,
       'private': instance.isPrivate,
       'fork': instance.isFork,

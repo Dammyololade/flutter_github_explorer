@@ -1,13 +1,13 @@
 
 import 'package:flutter_github_explorer/core/common_domain/models/api_result_model.dart';
 import 'package:flutter_github_explorer/core/common_domain/usecases/base_usecase.dart';
-import 'package:flutter_github_explorer/features/search/data/models/search_response/search_response.dart';
+import 'package:flutter_github_explorer/features/search/domain/entities/search_response_entity.dart';
 import 'package:flutter_github_explorer/features/search/domain/repositories/search_repository.dart';
 import 'package:injectable/injectable.dart';
 
 /// A concrete implementation of [LoadMoreUsecase] contract that uses [SearchRepository] to fetch paginated data.
 @injectable
-class LoadMoreUsecase implements BaseUsecase<SearchResponse> {
+class LoadMoreUsecase implements BaseUsecase<SearchResponseEntity> {
 
   LoadMoreUsecase(this.searchRepository);
 
@@ -18,7 +18,7 @@ class LoadMoreUsecase implements BaseUsecase<SearchResponse> {
   /// Expected parameter is the URL of the next page.
   /// Returns an [ApiResultModel] which can be either [ApiResultModelSuccess] or [ApiResultModelFailure].
   @override
-  Future<ApiResultModel<SearchResponse>> call({required String url}) {
+  Future<ApiResultModel<SearchResponseEntity>> call({required String url}) {
     return searchRepository.next(url: url);
   }
 

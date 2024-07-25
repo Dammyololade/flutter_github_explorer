@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter_github_explorer/features/search/domain/entities/owner_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'owner.g.dart';
@@ -22,6 +23,14 @@ class Owner extends Equatable {
   factory Owner.fromJson(Map<String, dynamic> json) => _$OwnerFromJson(json);
 
   Map<String, dynamic> toJson() => _$OwnerToJson(this);
+
+  OwnerEntity toEntity() {
+    return OwnerEntity(
+      login: login,
+      avatarUrl: avatarUrl,
+      url: url,
+    );
+  }
 
   @override
   List<Object?> get props => [login, avatarUrl, url];

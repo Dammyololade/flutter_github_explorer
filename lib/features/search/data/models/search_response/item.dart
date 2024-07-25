@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter_github_explorer/features/search/domain/entities/item_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'owner.dart';
@@ -46,6 +47,8 @@ class Item extends Equatable {
 
   factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);
 
+  Map<String, dynamic> toJson() => _$ItemToJson(this);
+
   @override
   String toString() {
     return 'Item(name: $name, fullName: $fullName, owner: $owner, description: $description, isPrivate: $isPrivate, isFork: $isFork, starGazersCount: $starGazersCount, watchersCount: $watchersCount, language: $language, forks: $forks, openIssues: $openIssues, defaultBranch: $defaultBranch)';
@@ -67,5 +70,22 @@ class Item extends Equatable {
       openIssues,
       defaultBranch,
     ];
+  }
+
+  ItemEntity toEntity() {
+    return ItemEntity(
+      name: name,
+      fullName: fullName,
+      owner: owner.toEntity(),
+      description: description,
+      isPrivate: isPrivate,
+      isFork: isFork,
+      starGazersCount: starGazersCount,
+      watchersCount: watchersCount,
+      language: language,
+      forks: forks,
+      openIssues: openIssues,
+      defaultBranch: defaultBranch,
+    );
   }
 }

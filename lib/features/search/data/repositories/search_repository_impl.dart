@@ -2,7 +2,7 @@ import 'package:flutter_github_explorer/core/common_domain/models/api_result_mod
 import 'package:flutter_github_explorer/core/common_domain/models/error_result_model.dart';
 import 'package:flutter_github_explorer/features/search/data/datasource/local_datasource/search_local_datasource.dart';
 import 'package:flutter_github_explorer/features/search/data/datasource/remote_datasource/search__remote_datasource.dart';
-import 'package:flutter_github_explorer/features/search/data/models/search_response/search_response.dart';
+import 'package:flutter_github_explorer/features/search/domain/entities/search_response_entity.dart';
 import 'package:flutter_github_explorer/features/search/domain/repositories/search_repository.dart';
 import 'package:injectable/injectable.dart';
 
@@ -30,25 +30,21 @@ class SearchRepositoryImpl implements SearchRepository {
   /// If the data is not available, it fetches the data from the remote API and caches it in the local database.
   /// It returns an [ApiResultModel] with the search response data.
   @override
-  Future<ApiResultModel<SearchResponse>> next({required String url}) async {
+  Future<ApiResultModel<SearchResponseEntity>> next({required String url}) async {
     try {
       final localData = await localDataSource.getSearchedData(url);
       if (localData != null) {
         return ApiResultModel.success(
-            data: SearchResponse.parse(
-          localData["data"],
-          localData["link"],
-        ));
+            data: localData.toEntity(),
+        );
       }
       final remoteData = await remoteDataSource.next(url);
       return remoteData.when(
           onSuccess: (data) {
             localDataSource.cacheSearchedData(data, url);
             return ApiResultModel.success(
-                data: SearchResponse.parse(
-              data["data"],
-              data["link"],
-            ));
+                data: data.toEntity(),
+            );
           },
           onFailure: (error) => ApiResultModel.failure(error: error));
     } catch (e) {
@@ -63,25 +59,21 @@ class SearchRepositoryImpl implements SearchRepository {
   /// If the data is available, it returns the cached data.
   /// If the data is not available, it fetches the data from the remote API and caches it in the local database.
   @override
-  Future<ApiResultModel<SearchResponse>> search({required String query}) async {
+  Future<ApiResultModel<SearchResponseEntity>> search({required String query}) async {
     try {
       final localData = await localDataSource.getSearchedData(query);
       if (localData != null) {
         return ApiResultModel.success(
-            data: SearchResponse.parse(
-          localData["data"],
-          localData["link"],
-        ));
+            data:localData.toEntity(),
+        );
       }
       final remoteData = await remoteDataSource.search(query);
       return remoteData.when(
           onSuccess: (data) {
             localDataSource.cacheSearchedData(data, query);
             return ApiResultModel.success(
-                data: SearchResponse.parse(
-              data["data"],
-              data["link"],
-            ));
+                data: data.toEntity(),
+            );
           },
           onFailure: (error) => ApiResultModel.failure(error: error));
     } catch (e) {

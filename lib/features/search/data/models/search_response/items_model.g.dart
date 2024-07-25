@@ -16,5 +16,5 @@ ItemsModel _$ItemsModelFromJson(Map<String, dynamic> json) => ItemsModel(
 Map<String, dynamic> _$ItemsModelToJson(ItemsModel instance) =>
     <String, dynamic>{
       'total_count': instance.totalCount,
-      'items': instance.items,
+      'items': instance.items.map((e) => e.toJson()).toList(),
     };

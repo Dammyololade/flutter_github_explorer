@@ -1,14 +1,13 @@
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter_github_explorer/features/issues/data/models/reactions.dart';
 import 'package:flutter_github_explorer/features/issues/data/models/user.dart';
+import 'package:flutter_github_explorer/features/issues/domain/entities/issue_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'issue.g.dart';
 
 @JsonSerializable()
 class Issue extends Equatable {
-
   final String title;
   @JsonKey(defaultValue: "")
   final String url;
@@ -42,9 +41,23 @@ class Issue extends Equatable {
 
   factory Issue.fromJson(Map<String, dynamic> json) => _$IssueFromJson(json);
 
+  Map<String, dynamic> toJson() => _$IssueToJson(this);
+
+  IssueEntity toEntity() => IssueEntity(
+        title: title,
+        url: url,
+        state: state,
+        locked: locked,
+        comments: comments,
+        draft: draft,
+        body: body,
+        user: user.toEntity(),
+        reactions: reactions.toEntity(),
+        createdAt: createdAt,
+      );
+
   @override
-  List<Object?> get props =>
-      [
+  List<Object?> get props => [
         title,
         url,
         state,
@@ -61,5 +74,4 @@ class Issue extends Equatable {
   String toString() {
     return 'Issue(title: $title, url: $url, state: $state, locked: $locked, comments: $comments, draft: $draft, body: $body, user: $user, reactions: $reactions)';
   }
-
 }

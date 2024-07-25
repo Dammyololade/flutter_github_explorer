@@ -27,7 +27,7 @@ Map<String, dynamic> _$IssueToJson(Issue instance) => <String, dynamic>{
       'comments': instance.comments,
       'draft': instance.draft,
       'body': instance.body,
-      'user': instance.user,
-      'reactions': instance.reactions,
+      'user': instance.user.toJson(),
+      'reactions': instance.reactions.toJson(),
       'created_at': instance.createdAt.toIso8601String(),
     };

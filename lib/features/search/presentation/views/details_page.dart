@@ -4,7 +4,7 @@ import 'package:flutter_github_explorer/core/di/app_locator.dart';
 import 'package:flutter_github_explorer/features/issues/domain/usecases/Issues_usecase.dart';
 import 'package:flutter_github_explorer/features/issues/presentation/cubit/issue_cubit.dart';
 import 'package:flutter_github_explorer/features/issues/presentation/views/issue_result.dart';
-import 'package:flutter_github_explorer/features/search/data/models/search_response/item.dart';
+import 'package:flutter_github_explorer/features/search/domain/entities/item_entity.dart';
 
 /// A page to display the details of a repository.
 /// It displays the repository name and the list of issues.
@@ -13,7 +13,7 @@ import 'package:flutter_github_explorer/features/search/data/models/search_respo
 class DetailsPage extends StatefulWidget {
   const DetailsPage({super.key, required this.item});
 
-  final Item item;
+  final ItemEntity item;
 
   @override
   State<DetailsPage> createState() => _DetailsPageState();

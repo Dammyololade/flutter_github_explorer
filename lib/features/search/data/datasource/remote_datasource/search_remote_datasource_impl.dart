@@ -3,6 +3,7 @@ import 'package:flutter_github_explorer/core/common_domain/models/error_result_m
 import 'package:flutter_github_explorer/core/utils/app_constants.dart';
 import 'package:flutter_github_explorer/core/utils/helpers/dio_request_wrapper.dart';
 import 'package:flutter_github_explorer/features/search/data/datasource/remote_datasource/search__remote_datasource.dart';
+import 'package:flutter_github_explorer/features/search/data/models/search_response/search_response.dart';
 import 'package:injectable/injectable.dart';
 
 /// A concrete implementation of [SearchRemoteDataSource] contract that uses [DioRequestWrapper] to fetch data.
@@ -20,17 +21,17 @@ class SearchRemoteDataSourceImpl implements SearchRemoteDataSource {
   /// It has a single parameter [query] which is the search query.
   /// This is used to search for repositories on Github.
   @override
-  Future<ApiResultModel<Map<String, dynamic>>> search(String query) async {
+  Future<ApiResultModel<SearchResponse>> search(String query) async {
     try {
       final response = await _dioRequestWrapper.call(
         "${AppConstants.serverBaseUrl}?q=$query&per_page=20",
       );
       return response.when(
         onSuccess: (data) => ApiResultModelSuccess(
-          data: {
-            "data": data.data,
-            "link": data.headers.value("link"),
-          },
+          data: SearchResponse.parse(
+            data.data,
+            data.headers.value("link"),
+          ),
         ),
         onFailure: (error) => ApiResultModelFailure(error: error),
       );
@@ -50,17 +51,17 @@ class SearchRemoteDataSourceImpl implements SearchRemoteDataSource {
   /// [ApiResultModelSuccess] contains the data returned from the server.
   /// [ApiResultModelFailure] contains the error that occurred while fetching data.
   @override
-  Future<ApiResultModel<Map<String, dynamic>>> next(String url) async {
+  Future<ApiResultModel<SearchResponse>> next(String url) async {
     try {
       final response = await _dioRequestWrapper.call(
         url,
       );
       return response.when(
         onSuccess: (data) => ApiResultModelSuccess(
-          data:  {
-            "data": data.data,
-            "link": data.headers.value("link"),
-          },
+          data: SearchResponse.parse(
+            data.data,
+            data.headers.value("link"),
+          ),
         ),
         onFailure: (error) => ApiResultModelFailure(error: error),
       );

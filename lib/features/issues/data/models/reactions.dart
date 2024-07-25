@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter_github_explorer/features/issues/domain/entities/reactions_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'reactions.g.dart';
@@ -40,6 +41,21 @@ class Reactions extends Equatable {
 
   factory Reactions.fromJson(Map<String, dynamic> json) =>
       _$ReactionsFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ReactionsToJson(this);
+
+  ReactionsEntity toEntity() => ReactionsEntity(
+        url: url,
+        totalCount: totalCount,
+        like: like,
+        dislike: dislike,
+        laugh: laugh,
+        hooray: hooray,
+        confused: confused,
+        heart: heart,
+        rocket: rocket,
+        eyes: eyes,
+      );
 
   @override
   List<Object?> get props => [

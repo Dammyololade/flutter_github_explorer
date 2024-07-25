@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_github_explorer/core/utils/route_manager.dart';
-import 'package:flutter_github_explorer/features/search/data/models/search_response/item.dart';
+import 'package:flutter_github_explorer/features/search/domain/entities/item_entity.dart';
 import 'package:flutter_github_explorer/features/search/presentation/cubit/search_cubit.dart';
 import 'package:flutter_github_explorer/features/search/presentation/cubit/search_state.dart';
 import 'package:refresh_loadmore/refresh_loadmore.dart';
@@ -43,7 +43,7 @@ class SearchLoadedBuilder extends StatelessWidget {
         await context.read<SearchCubit>().loadMore();
       },
       noMoreWidget: Text(
-        state.data.model.items.isEmpty
+        state.data.results.isEmpty
             ? 'No result found, Kindly refine your search'
             : 'No more data, you are at the end',
         style: TextStyle(
@@ -56,11 +56,11 @@ class SearchLoadedBuilder extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 16),
           shrinkWrap: true,
           itemBuilder: (ct, index) =>
-              SingleItemBuilder(item: state.data.model.items[index]),
+              SingleItemBuilder(item: state.data.results[index]),
           separatorBuilder: (_, __) => const SizedBox(
                 height: 16,
               ),
-          itemCount: state.data.model.items.length),
+          itemCount: state.data.results.length),
     );
   }
 }
@@ -81,7 +81,7 @@ class SearchErrorBuilder extends StatelessWidget {
 class SingleItemBuilder extends StatelessWidget {
   const SingleItemBuilder({super.key, required this.item});
 
-  final Item item;
+  final ItemEntity item;
 
   @override
   Widget build(BuildContext context) {

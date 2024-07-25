@@ -1,5 +1,6 @@
 import 'package:flutter_github_explorer/core/database/local_database.dart';
 import 'package:flutter_github_explorer/features/search/data/datasource/local_datasource/search_local_datasource.dart';
+import 'package:flutter_github_explorer/features/search/data/models/search_response/search_response.dart';
 import 'package:injectable/injectable.dart';
 
 /// [SearchLocalDatasourceImpl] is a class that implements the [SearchLocalDatasource] abstract class.
@@ -15,12 +16,13 @@ class SearchLocalDatasourceImpl implements SearchLocalDatasource {
   final LocalDatabase localDatabase;
 
   @override
-  void cacheSearchedData(Map<String, dynamic> searchResponse, String key) {
-    localDatabase.put(key: key, data: searchResponse, store: DBStore.search);
+  void cacheSearchedData(SearchResponse response, String key) {
+    localDatabase.put(key: key, data: response.toJson(), store: DBStore.search);
   }
 
   @override
-  Future<Map<String, dynamic>?> getSearchedData(String key) {
-    return localDatabase.get(key: key, store: DBStore.search);
+  Future<SearchResponse?> getSearchedData(String key) async {
+    final result = await localDatabase.get(key: key, store: DBStore.search);
+    return result != null ? SearchResponse.fromJson(result) : null;
   }
 }

@@ -23,6 +23,15 @@ class PaginationInfo {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'first': first,
+      'last': last,
+      'prev': prev,
+      'next': next,
+    };
+  }
+
   @override
   String toString() {
     return 'PaginationInfo(first: $first, last: $last, prev: $prev, next: $next)';

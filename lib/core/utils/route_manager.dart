@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_github_explorer/features/search/data/models/search_response/item.dart';
+import 'package:flutter_github_explorer/features/search/domain/entities/item_entity.dart';
 import 'package:flutter_github_explorer/features/search/presentation/views/details_page.dart';
 import 'package:flutter_github_explorer/features/search/presentation/views/home_page.dart';
 import 'package:flutter_github_explorer/features/search/presentation/views/search_page.dart';
@@ -18,7 +18,7 @@ class RouteManager {
         home: (context) => const HomePage(),
         search: (context) => const SearchPage(),
         details: (context) => DetailsPage(
-              item: ModalRoute.of(context)!.settings.arguments as Item,
+              item: ModalRoute.of(context)!.settings.arguments as ItemEntity,
             ),
       };
 }

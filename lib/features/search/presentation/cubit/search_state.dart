@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter_github_explorer/features/search/data/models/search_response/search_response.dart';
+import 'package:flutter_github_explorer/features/search/domain/entities/search_response_entity.dart';
 
 /// A class to represent the state of the search feature.
 /// It can be in one of the following states:
@@ -27,7 +27,7 @@ class SearchLoading extends SearchState {
 }
 
 class SearchLoaded extends SearchState {
-  final SearchResponse data;
+  final SearchResponseEntity data;
   final String searchQuery;
 
   SearchLoaded({required this.data, required this.searchQuery});

@@ -2,6 +2,7 @@ import 'package:flutter_github_explorer/core/common_domain/models/api_result_mod
 import 'package:flutter_github_explorer/core/common_domain/models/error_result_model.dart';
 import 'package:flutter_github_explorer/core/utils/helpers/dio_request_wrapper.dart';
 import 'package:flutter_github_explorer/features/issues/data/datasource/remote_datasource/issue_remote_datasource.dart';
+import 'package:flutter_github_explorer/features/issues/data/models/issue_response.dart';
 import 'package:injectable/injectable.dart';
 
 /// A remote datasource implementation to fetch issues from the GitHub API.
@@ -16,16 +17,18 @@ class IssueRemoteDatasourceImpl implements IssueRemoteDatasource {
   /// Fetches the issues from the GitHub API using the provided [key].
   /// Returns an [ApiResultModel] with the data returned by the API or the error details.
   @override
-  Future<ApiResultModel<Map<String, dynamic>>> getIssues(String key) async {
+  Future<ApiResultModel<IssueResponse>> getIssues(String key) async {
     try {
       final response = await _dioRequestWrapper.call(
         key,
       );
       return response.when(
-        onSuccess: (data) => ApiResultModelSuccess(data: {
-          "data": data.data,
-          "link": data.headers.value("link"),
-        }),
+        onSuccess: (data) => ApiResultModelSuccess(
+          data: IssueResponse.parse(
+            data.data,
+            data.headers.value("link"),
+          ),
+        ),
         onFailure: (error) => ApiResultModelFailure(error: error),
       );
     } on Exception catch (e) {

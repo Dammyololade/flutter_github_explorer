@@ -19,6 +19,8 @@ class ItemsModel extends Equatable {
   factory ItemsModel.fromJson(Map<String, dynamic> json) =>
       _$ItemsModelFromJson(json);
 
+  Map<String, dynamic> toJson() => _$ItemsModelToJson(this);
+
   @override
   List<Object?> get props => [totalCount, items];
 

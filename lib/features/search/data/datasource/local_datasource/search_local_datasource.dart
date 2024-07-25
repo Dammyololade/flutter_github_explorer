@@ -1,4 +1,6 @@
 
+import 'package:flutter_github_explorer/features/search/data/models/search_response/search_response.dart';
+
 /// [SearchLocalDatasource] is an abstract class that defines the methods to be implemented by the [SearchLocalDatasourceImpl] class.
 /// It contains the following methods:
 /// - [getSearchedData]: Fetches the searched data for a given key.
@@ -9,8 +11,8 @@
 /// The local datasource layer is used to improve the performance of the app by reducing the number of network calls.
 abstract class SearchLocalDatasource {
   /// Fetches the searched data for a given [key].
-  Future<Map<String, dynamic>?> getSearchedData(String key);
+  Future<SearchResponse?> getSearchedData(String key);
 
   /// Caches the searched data for a given [key].
-  void cacheSearchedData(Map<String, dynamic> searchResponse, String key);
+  void cacheSearchedData(SearchResponse response, String key);
 }

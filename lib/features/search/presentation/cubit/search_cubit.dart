@@ -60,7 +60,7 @@ class SearchCubit extends Cubit<SearchState> {
       return;
     }
     result.when(onSuccess: (data) {
-      data.model.items.sort((a, b) =>
+      data.results.sort((a, b) =>
           a.fullName.toLowerCase().compareTo(b.fullName.toLowerCase()));
       emit(SearchLoaded(searchQuery: query, data: data));
     }, onFailure: (error) {
@@ -91,12 +91,12 @@ class SearchCubit extends Cubit<SearchState> {
     }
     final result = await loadMoreUsecase.call(url: nextPageUrl);
     result.when(onSuccess: (data) {
-      data.model.items.sort((a, b) =>
+      data.results.sort((a, b) =>
           a.fullName.toLowerCase().compareTo(b.fullName.toLowerCase()));
       emit(SearchLoaded(
         searchQuery: currentState.searchQuery,
         data: currentState.data.copyWithLoadMoreResponse(
-          data.model,
+          data.results,
           data.paginationInfo,
         ),
       ));

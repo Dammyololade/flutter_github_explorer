@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_github_explorer/features/issues/data/models/issue.dart';
+import 'package:flutter_github_explorer/features/issues/domain/entities/issue_entity.dart';
 import 'package:flutter_github_explorer/features/issues/presentation/cubit/issue_cubit.dart';
 import 'package:flutter_github_explorer/features/issues/presentation/cubit/issue_state.dart';
 import 'package:refresh_loadmore/refresh_loadmore.dart';
@@ -91,7 +91,7 @@ class IssueErrorBuilder extends StatelessWidget {
 class SingleIssueBuilder extends StatelessWidget {
   const SingleIssueBuilder({super.key, required this.issue});
 
-  final Issue issue;
+  final IssueEntity issue;
 
   @override
   Widget build(BuildContext context) {
