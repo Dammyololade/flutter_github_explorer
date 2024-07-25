@@ -18,7 +18,10 @@ void main() {
     usecase = MockIssuesUsecase();
     when(() => usecase.call(url: any(named: "url"))).thenAnswer(
       (_) async => ApiResultModelSuccess(
-        data: IssueResponse.parse(TestUtis.issueResponse, TestUtis.sampleLink),
+        data: IssueResponse.parse(
+          TestUtis.issueResponse,
+          TestUtis.sampleLink,
+        ).toEntity(),
       ),
     );
   });
@@ -63,7 +66,9 @@ void main() {
           issuesUsecase: usecase,
           state: IssueLoaded(
             data: IssueResponse.parse(
-                TestUtis.issueResponse, TestUtis.sampleLink),
+              TestUtis.issueResponse,
+              TestUtis.sampleLink,
+            ).toEntity(),
           )),
       act: (IssueCubit cubit) async {
         await cubit.loadMore();
@@ -97,7 +102,10 @@ void main() {
       build: () => IssueCubit(
           issuesUsecase: usecase,
           state: IssueLoaded(
-            data: IssueResponse.parse(TestUtis.issueResponse, ""),
+            data: IssueResponse.parse(
+              TestUtis.issueResponse,
+              "",
+            ).toEntity(),
           )),
       act: (IssueCubit cubit) async {
         await cubit.loadMore();
@@ -131,6 +139,5 @@ void main() {
         verify(() => usecase.call(url: any(named: "url"))).called(1);
       },
     );
-
   });
 }

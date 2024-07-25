@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_github_explorer/core/common_domain/models/api_result_model.dart';
+import 'package:flutter_github_explorer/core/common_domain/models/pagination_info.dart';
 import 'package:flutter_github_explorer/core/utils/helpers/dio_request_wrapper.dart';
 import 'package:flutter_github_explorer/features/issues/data/datasource/remote_datasource/issue_remote_datasource_impl.dart';
+import 'package:flutter_github_explorer/features/issues/data/models/issue_response.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -37,9 +39,9 @@ void main() {
       final response = await remoteDatasource.getIssues(key);
       verify(() => dioRequestWrapper.call(any())).called(1);
       expect(response, isA<ApiResultModelSuccess>());
-      final parsedResponse = response as ApiResultModelSuccess<Map<String, dynamic>>;
-      expect(parsedResponse.data["data"], isNotNull);
-      expect(parsedResponse.data["link"], TestUtis.sampleLink);
+      final parsedResponse = response as ApiResultModelSuccess<IssueResponse>;
+      expect(parsedResponse.data.issues, isNotEmpty);
+      expect(parsedResponse.data.paginationInfo, isA<PaginationInfo>());
     });
 
     test("should return ApiResultModelFailure if an exception is thrown", () async {

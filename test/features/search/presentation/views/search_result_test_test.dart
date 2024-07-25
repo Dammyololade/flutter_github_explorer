@@ -64,7 +64,9 @@ void main() {
         (tester) async {
       final loaded = SearchLoaded(
           data: SearchResponse.parse(
-              TestUtis.searchResponse, TestUtis.sampleLink),
+            TestUtis.searchResponse,
+            TestUtis.sampleLink,
+          ).toEntity(),
           searchQuery: 'names');
       when(() => searchCubit.state).thenReturn(loaded);
       when(() => searchCubit.stream)
@@ -74,7 +76,7 @@ void main() {
 
       expect(find.byType(RefreshLoadmore), findsOneWidget);
       expect(find.byType(SingleItemBuilder),
-          findsNWidgets(loaded.data.model.items.length));
+          findsNWidgets(loaded.data.results.length));
     });
   });
 }

@@ -22,11 +22,11 @@ void main() {
     test('should call next from repository', () async {
       const url = 'url';
       when(() => searchRepository.next(url: any(named: "url"))).thenAnswer(
-            (_) async => ApiResultModelSuccess(
+        (_) async => ApiResultModelSuccess(
           data: SearchResponse(
             model: const ItemsModel(items: [], totalCount: 0),
             paginationInfo: PaginationInfo(),
-          ),
+          ).toEntity(),
         ),
       );
 

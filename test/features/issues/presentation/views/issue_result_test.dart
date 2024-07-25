@@ -64,8 +64,10 @@ void main() {
     testWidgets("show IssuesLoadedBuilder when state is loaded",
         (tester) async {
       final loaded = IssueLoaded(
-          data:
-              IssueResponse.parse(TestUtis.issueResponse, TestUtis.sampleLink));
+          data: IssueResponse.parse(
+        TestUtis.issueResponse,
+        TestUtis.sampleLink,
+      ).toEntity());
       when(() => issueCubit.state).thenReturn(loaded);
       when(() => issueCubit.stream)
           .thenAnswer((_) => Stream.fromIterable([loaded]));

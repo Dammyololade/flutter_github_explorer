@@ -21,14 +21,18 @@ void main() {
 
     when(() => searchUsecase.call(url: any(named: "url"))).thenAnswer(
       (_) async => ApiResultModelSuccess(
-        data:
-            SearchResponse.parse(TestUtis.searchResponse, TestUtis.sampleLink),
+        data: SearchResponse.parse(
+          TestUtis.searchResponse,
+          TestUtis.sampleLink,
+        ).toEntity(),
       ),
     );
     when(() => loadMoreUsecase.call(url: any(named: "url"))).thenAnswer(
       (_) async => ApiResultModelSuccess(
-        data:
-            SearchResponse.parse(TestUtis.searchResponse, TestUtis.sampleLink),
+        data: SearchResponse.parse(
+          TestUtis.searchResponse,
+          TestUtis.sampleLink,
+        ).toEntity(),
       ),
     );
   });
@@ -47,7 +51,7 @@ void main() {
       expect: () => [
         isA<SearchLoading>(),
         isA<SearchLoaded>().having(
-          (state) => state.data.model.items.isNotEmpty,
+          (state) => state.data.results.isNotEmpty,
           "items is not empty",
           true,
         ),
@@ -67,13 +71,13 @@ void main() {
           data: SearchResponse.parse(
             TestUtis.searchResponse,
             TestUtis.sampleLink,
-          ),
+          ).toEntity(),
         ),
       ),
       act: (SearchCubit cubit) => cubit.loadMore(),
       expect: () => [
         isA<SearchLoaded>().having(
-          (state) => state.data.model.items.isNotEmpty,
+          (state) => state.data.results.isNotEmpty,
           "items is not empty",
           true,
         ),
@@ -93,13 +97,13 @@ void main() {
           data: SearchResponse.parse(
             TestUtis.searchResponse,
             TestUtis.sampleLink,
-          ),
+          ).toEntity(),
         ),
       ),
       act: (SearchCubit cubit) => cubit.refresh(),
       expect: () => [
         isA<SearchLoaded>().having(
-          (state) => state.data.model.items.isNotEmpty,
+          (state) => state.data.results.isNotEmpty,
           "items is not empty",
           true,
         ),

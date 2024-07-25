@@ -8,6 +8,7 @@ import 'package:flutter_github_explorer/features/issues/data/models/issue_respon
 import 'package:flutter_github_explorer/features/issues/domain/usecases/Issues_usecase.dart';
 import 'package:flutter_github_explorer/features/issues/presentation/views/issue_result.dart';
 import 'package:flutter_github_explorer/features/search/data/models/search_response/item.dart';
+import 'package:flutter_github_explorer/features/search/domain/entities/item_entity.dart';
 import 'package:flutter_github_explorer/features/search/presentation/views/details_page.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -17,7 +18,7 @@ import '../../../../utils/test_utis.dart';
 
 void main() {
   late IssuesUsecase issuesUsecase;
-  final Item item = Item.fromJson(TestUtis.singleItem);
+  final ItemEntity item = Item.fromJson(TestUtis.singleItem).toEntity();
 
   setUpAll(() {
     HttpOverrides.global = null;
@@ -29,7 +30,7 @@ void main() {
         data: IssueResponse(
           issues: [],
           paginationInfo: PaginationInfo(),
-        ),
+        ).toEntity(),
       ),
     );
 
@@ -68,7 +69,8 @@ void main() {
       expect(find.byType(Hero), findsOneWidget);
     });
 
-    testWidgets("should show DetailsPage with IssueResult widget", (tester) async {
+    testWidgets("should show DetailsPage with IssueResult widget",
+        (tester) async {
       await pumpWidget(tester);
       await tester.pumpAndSettle();
 

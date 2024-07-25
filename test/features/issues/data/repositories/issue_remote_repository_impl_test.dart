@@ -4,6 +4,7 @@ import 'package:flutter_github_explorer/features/issues/data/datasource/local_da
 import 'package:flutter_github_explorer/features/issues/data/datasource/remote_datasource/issue_remote_datasource.dart';
 import 'package:flutter_github_explorer/features/issues/data/models/issue_response.dart';
 import 'package:flutter_github_explorer/features/issues/data/repositories/issue_repository_impl.dart';
+import 'package:flutter_github_explorer/features/issues/domain/entities/issue_response_entity.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -16,6 +17,7 @@ void main() {
   late IssueLocalDatasource issueLocalDatasource;
 
   setUp(() {
+    registerFallbackValue(MockIssueResponse());
     issueRemoteDatasource = MockIssueRemoteDatasource();
     issueLocalDatasource = MockIssueLocalDatasource();
 
@@ -31,32 +33,36 @@ void main() {
           .thenAnswer((_) async => null);
 
       when(() => issueRemoteDatasource.getIssues(any())).thenAnswer(
-          (_) async => ApiResultModelSuccess<Map<String, dynamic>>(data: {
-                "data": TestUtis.issueResponse,
-                "link": TestUtis.sampleLink,
-              }));
+        (_) async => ApiResultModelSuccess<IssueResponse>(
+          data: IssueResponse.parse(
+            TestUtis.issueResponse,
+            TestUtis.sampleLink,
+          ),
+        ),
+      );
 
       final response = await issueRepository.getIssues(url: "url");
       verify(() => issueRemoteDatasource.getIssues("url"));
       verify(() => issueLocalDatasource.cacheIssues(any(), any())).called(1);
       expect(response, isA<ApiResultModelSuccess>());
-      final parsedResponse = response as ApiResultModelSuccess<IssueResponse>;
+      final parsedResponse = response as ApiResultModelSuccess<IssueResponseEntity>;
       expect(parsedResponse.data.issues.isNotEmpty, true);
       expect(parsedResponse.data.paginationInfo, isNotNull);
     });
 
     test("should get issues from local datasource", () async {
-      when(() => issueLocalDatasource.getIssues(any()))
-          .thenAnswer((_) async => {
-                "data": TestUtis.issueResponse,
-                "link": TestUtis.sampleLink,
-              });
+      when(() => issueLocalDatasource.getIssues(any())).thenAnswer(
+        (_) async => IssueResponse.parse(
+          TestUtis.issueResponse,
+          TestUtis.sampleLink,
+        ),
+      );
 
       final response = await issueRepository.getIssues(url: "url");
       verify(() => issueLocalDatasource.getIssues("url"));
       verifyNever(() => issueRemoteDatasource.getIssues(any()));
       expect(response, isA<ApiResultModelSuccess>());
-      final parsedResponse = response as ApiResultModelSuccess<IssueResponse>;
+      final parsedResponse = response as ApiResultModelSuccess<IssueResponseEntity>;
       expect(parsedResponse.data.issues.isNotEmpty, true);
       expect(parsedResponse.data.paginationInfo, isNotNull);
     });
@@ -77,14 +83,10 @@ void main() {
 
     test("should catch unexpected errors", () async {
       when(() => issueLocalDatasource.getIssues(any()))
-          .thenAnswer((_) async => {
-        "data": {},
-        "link": TestUtis.sampleLink,
-      });
+          .thenThrow(Exception());
 
       final response = await issueRepository.getIssues(url: "url");
       expect(response, isA<ApiResultModelFailure>());
     });
-
   });
 }
